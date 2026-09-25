@@ -41,11 +41,22 @@ What `inline.py` does:
 
 Other sources, such as other CDNs or other image hosts, are not handled yet. Extend `inline.py` for them rather than embedding them by hand.
 
+## Rule: every page has its own embedded favicon
+
+Each `<LANG>/*.html` page needs a favicon designed for it, placed right after `<title>`. No two pages share one, and none reuse `assets/favicon.svg`, which belongs to `index.html`.
+
+- Draw a small 32×32 SVG that fits the page: its subject (burger, beer mug, fish, server rack...) in the page's own palette, taken from its CSS variables. Use shapes, not text, so it doesn't depend on fonts, and make sure it still reads at 16px.
+- Embed it as a percent-encoded data URI: `<link rel="icon" href="data:image/svg+xml,...">`. Use single quotes inside the SVG and encode `<`, `>`, `#` and `:` (so `xmlns='http%3A//www.w3.org/2000/svg'`). An unencoded `http://` in a `<link>` makes `inline.py` report the favicon as a remaining ref.
+- Don't point it at a file or a URL. That would break the offline rule.
+
 ## Checks
 
 ```sh
 # should print only plain hyperlinks and the SVG xmlns
 grep -o 'https\?://[^"'"'"' )<>]*' */*.html | grep -v 'w3.org/2000/svg' | sort -u
+
+# every page should print exactly one embedded favicon
+grep -c '<link rel="icon" href="data:image/svg+xml,' */*.html
 ```
 
 Test pages in a browser with the network disabled, at desktop width and in device emulation at 320px and 390px. At each width, `document.documentElement.scrollWidth` must equal `innerWidth`.
