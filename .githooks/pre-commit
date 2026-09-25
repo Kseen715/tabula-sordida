@@ -1,0 +1,5 @@
+#!/bin/sh
+# Regenerate index.html whenever a page or the generator is part of the commit.
+# Enable once per clone: git config core.hooksPath .githooks
+git diff --cached --name-only | grep -qE '^([^/]+/[^/]+\.html|build_index\.py)$' || exit 0
+python3 build_index.py && python3 inline.py index.html >/dev/null && git add index.html
