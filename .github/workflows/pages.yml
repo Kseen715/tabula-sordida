@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # regenerate so the index always matches the pages being deployed
-      - run: python3 build_index.py
+      - run: python3 build_index.py && python3 inline.py index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
