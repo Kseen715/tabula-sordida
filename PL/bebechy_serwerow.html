@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=800">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bebechy :: zdjęcia z wnętrza serwerów</title>
 <!-- szablon: przerobiony Minima, bo oryginalny był za biały. Radiator 2005 -->
 <style type="text/css">
@@ -79,6 +79,16 @@ input[type=submit], button { font: 11px Verdana, sans-serif; background: #e8ebe0
 .b3 span:first-child { background: #333; color: #fff; } .b3 span:last-child { background: #c33; color: #fff; }
 .b4 span:first-child { background: #fff; color: #36c; } .b4 span:last-child { background: #36c; color: #fff; }
 #footer { clear: both; border-top: 1px solid #b9bfa8; background: #e8ebe0; text-align: center; font-size: 10px; color: #667; padding: 8px; }
+@media (max-width: 800px) {
+    body { padding: 0; }
+    #outer { width: auto; border: 0; }
+    #header { padding: 16px 12px 12px; }
+    #nav { padding: 6px 12px; line-height: 2; }
+    #wrap, #main, #side { display: block; width: auto; }
+    #main { padding: 14px 12px; }
+    #side { padding: 14px 12px; border-left: 0; border-top: 1px dotted #b9bfa8; }
+    .photo img, .photo img.big { width: 100%; max-width: 518px; box-sizing: border-box; height: auto; }
+}
 </style>
 </head>
 <body>

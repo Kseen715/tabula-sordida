@@ -640,8 +640,12 @@
   footer a:hover { text-decoration: underline; }
 
   /* ── RESPONSIVE ── */
+  .code-layout > * { min-width: 0; }
+  .join-form input { min-width: 0; }
+
   @media (max-width: 768px) {
-    nav ul { display: none; }
+    nav { flex-direction: column; gap: 0.9rem; }
+    nav ul { flex-wrap: wrap; justify-content: center; gap: 0.6rem 1.4rem; }
     .about-grid, .code-layout { grid-template-columns: 1fr; gap: 2.5rem; }
     .about-image { margin-top: 1rem; }
     .about-image .img-caption { position: static; margin-top: 0.5rem; }
@@ -652,6 +656,7 @@
     .gallery-item:first-child { grid-row: auto; grid-column: 1 / 3; }
     nav { padding: 1.2rem 1.5rem; }
     section { padding: 4rem 1.5rem; }
+    pre { padding: 1.2rem; }
   }
 
   /* ── SCROLL REVEAL ── */

@@ -314,7 +314,7 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
             gap: 40px;
             max-width: 1300px;
             margin: 0 auto;
@@ -437,7 +437,10 @@
         }
 
         @media (max-width: 768px) {
-            .hero-content h1 { font-size: 3.5rem; }
+            .hero-content h1 { font-size: clamp(2rem, 10vw, 3.5rem); }
+            .hero-content p { font-size: 1.15rem; }
+            .logo { font-size: 20px; letter-spacing: 1px; }
+            .cart { font-size: 16px; gap: 6px; }
             header { padding: 15px 20px; }
             .menu { padding: 80px 20px; }
         }

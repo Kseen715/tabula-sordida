@@ -253,7 +253,7 @@
     .menu-header { margin-bottom: 3rem; }
     .menu-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
       gap: 1.5px;
     }
     .menu-item {
@@ -404,14 +404,17 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 760px) {
-      nav { padding: 1rem 1.4rem; }
-      nav ul { display: none; }
+      nav { padding: 1rem 1.4rem; gap: .8rem; }
+      .logo { letter-spacing: .06em; }
+      .nav-cta { padding: .45rem .8rem; }
+      nav ul li:not(:last-child) { display: none; }
       section { padding: 4rem 1.4rem; }
       .about-inner { grid-template-columns: 1fr; gap: 2.5rem; }
       .about-visual { height: 260px; }
       .cta-strip { gap: 2.5rem; flex-direction: column; }
       .cta-divider { width: 80px; height: 1px; }
-      footer { flex-direction: column; text-align: center; }
+      footer { flex-direction: column; text-align: center; padding-left: 1.4rem; padding-right: 1.4rem; }
+      .footer-links { flex-wrap: wrap; justify-content: center; gap: .6rem 1.6rem; }
     }
   </style>
 </head>
