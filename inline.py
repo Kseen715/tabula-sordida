@@ -22,10 +22,19 @@ def photo(pid, w):
         sys.exit(f'photo-{pid}: HTTP {e.code}; pick another Unsplash photo id (file left unchanged)')
 
 SUBSETS = {'latin', 'latin-ext', 'cyrillic', 'cyrillic-ext'}
-def fonts_style(href):
+def covers(rng, chars):
+    for a, b in re.findall(r'U\+([\da-f?]+)(?:-([\da-f]+))?', rng, re.I):
+        lo, hi = int(a.replace('?', '0'), 16), int((b or a).replace('?', 'f'), 16)
+        if any(lo <= c <= hi for c in chars):
+            return True
+    return False
+def fonts_style(href, text):
     css = get(href.replace('&amp;', '&'))[1].decode()
-    blocks = re.findall(r'/\* ([\w-]+) \*/\s*(@font-face \{.*?\})', css, re.S)
-    out = [re.sub(r'url\((.*?)\)', lambda m: f'url({data_uri(m[1])})', b) for sub, b in blocks if sub in SUBSETS]
+    # CJK fonts ship as ~100 unnamed numbered slices; keep only slices holding characters the page uses
+    chars = {ord(c) for c in text if ord(c) > 0x2ff}
+    blocks = re.findall(r'(?:/\* ([\w-]+) \*/\s*)?(@font-face \{.*?\})', css, re.S)
+    keep = [b for sub, b in blocks if sub in SUBSETS or not sub and covers(re.search(r'unicode-range:([^;]*)', b)[1], chars)]
+    out = [re.sub(r'url\((.*?)\)', lambda m: f'url({data_uri(m[1])})', b) for b in keep]
     return '<style>\n' + '\n'.join(out) + '\n</style>'
 
 for p in sys.argv[1:]:
@@ -35,7 +44,7 @@ for p in sys.argv[1:]:
     if dups:
         print(f'  warning: photos used more than once: {dups}')
     s = re.sub(r'[ \t]*<link rel="preconnect"[^>]*>\n', '', s)
-    s = re.sub(r'<link href="(https://fonts\.googleapis\.com/[^"]+)" rel="stylesheet"\s*/?>', lambda m: fonts_style(m[1]), s)
+    s = re.sub(r'<link href="(https://fonts\.googleapis\.com/[^"]+)" rel="stylesheet"\s*/?>', lambda m: fonts_style(m[1], s), s)
     # menu items reference photos by id; emit one lookup table instead of repeating data URIs
     ids = sorted(set(re.findall(r'img: "([\da-f-]+)"', s)))
     if ids and 'const IMG = {' not in s:
