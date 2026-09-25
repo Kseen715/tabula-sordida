@@ -11,7 +11,7 @@
 --mono:"JetBrains Mono",ui-monospace,monospace;--disp:"Tektur","Arial Narrow",sans-serif;--cut:18px}
 *{box-sizing:border-box}
 html{background:var(--k)}
-body{margin:0;min-height:100vh;color:var(--w);font:15px/1.45 var(--disp);overflow-x:hidden;
+body{margin:0;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;color:var(--w);font:15px/1.45 var(--disp);overflow-x:hidden;
 background:linear-gradient(#ffffff08 1px,transparent 1px) 0 0/32px 32px,linear-gradient(90deg,#ffffff08 1px,transparent 1px) 0 0/32px 32px,var(--k)}
 ::selection{background:var(--acid);color:var(--k)}
 .top,.serial,.no,.p,.cnt,.stats,.tag,footer{font-family:var(--mono)}
@@ -19,7 +19,8 @@ background:linear-gradient(#ffffff08 1px,transparent 1px) 0 0/32px 32px,linear-g
 .top .dot{width:8px;height:8px;background:var(--acid);display:inline-block;margin-right:6px;animation:blink 1.2s steps(2) infinite}
 .top .bar{flex:1;min-width:80px;height:14px;background:repeating-linear-gradient(90deg,var(--w) 0 2px,transparent 2px 4px,var(--w) 4px 5px,transparent 5px 9px,var(--w) 9px 12px,transparent 12px 14px)}
 @keyframes blink{50%{opacity:0}}
-main{max-width:1120px;margin:0 auto;padding:0 16px 48px}
+/* body and main are flex columns so the footer sits at the viewport bottom on short pages */
+main{flex:1;display:flex;flex-direction:column;width:100%;max-width:1120px;margin:0 auto;padding:0 16px 48px}
 .hero{position:relative;padding:56px 0 32px}
 .hero::before{content:"";position:absolute;right:0;top:40px;width:min(38%,380px);height:120px;
 background:repeating-linear-gradient(-45deg,var(--hot) 0 10px,transparent 10px 20px);clip-path:polygon(40px 0,100% 0,100% 100%,0 100%,0 40px)}
@@ -42,7 +43,7 @@ font:800 14px/1 var(--disp);text-transform:uppercase;letter-spacing:.06em}
 @keyframes tick{to{transform:translateX(-50%)}}
 /* balanced columns, not a grid: each card keeps its own height, so short cards neither stretch
    into empty boxes nor leave holes beside tall ones; reading order runs down each column */
-.grid{columns:460px;column-gap:28px}
+.grid{columns:460px;column-gap:28px;margin-bottom:28px}
 .grid>section{break-inside:avoid;margin-bottom:28px}
 section{--poly:polygon(var(--cut) 0,100% 0,100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,0 100%,0 var(--cut));
 background:var(--a);padding:2px;clip-path:var(--poly);transition:transform .15s}
@@ -66,7 +67,7 @@ border:1px solid #ffffff22;border-left:4px solid var(--a);background:#ffffff05;t
 li a:hover,li a:focus-visible{background:var(--a);color:var(--k);transform:translateX(4px)}
 li a:hover :is(.no,.p,.go),li a:focus-visible :is(.no,.p,.go){color:var(--k)}
 a:focus-visible{outline:2px solid var(--w);outline-offset:3px}
-footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:56px;padding-top:14px;border-top:2px solid var(--w);
+footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:auto;padding-top:14px;border-top:2px solid var(--w);
 font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
 footer a{color:var(--acid);text-decoration:none}footer a:hover{background:var(--acid);color:var(--k)}
 .top a{color:var(--k);background:var(--acid);padding:2px 6px;text-decoration:none}.top a:hover{background:var(--w)}
