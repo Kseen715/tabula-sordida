@@ -17,7 +17,8 @@ background:linear-gradient(#ffffff08 1px,transparent 1px) 0 0/32px 32px,linear-g
 .top,.serial,.no,.p,.cnt,.stats,.tag,footer{font-family:var(--mono)}
 .top{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;padding:10px 16px;border-bottom:2px solid var(--w);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
 .top .dot{width:8px;height:8px;background:var(--acid);display:inline-block;margin-right:6px;animation:blink 1.2s steps(2) infinite}
-.top .bar{flex:1;min-width:80px;height:14px;background:repeating-linear-gradient(90deg,var(--w) 0 2px,transparent 2px 4px,var(--w) 4px 5px,transparent 5px 9px,var(--w) 9px 12px,transparent 12px 14px)}
+/* real Code 39, dark on light with quiet zones so scanners read it; natural width, pushed right */
+.top .bar{flex:none;margin-left:auto;padding:3px 10px;box-sizing:content-box;background:var(--w);fill:var(--k)}
 @keyframes blink{50%{opacity:0}}
 /* body and main are flex columns so the footer sits at the viewport bottom on short pages */
 main{--gut:clamp(16px,3vw,48px);flex:1;display:flex;flex-direction:column;width:100%;max-width:1920px;margin:0 auto;padding:0 var(--gut) 48px}

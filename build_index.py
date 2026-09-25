@@ -34,6 +34,24 @@ for i, (folder, pages) in enumerate(groups.items(), 1):
     ticker += [f'<b>{e(folder)}</b>'] + [e(t) for _, t, _ in pages]
 total = sum(len(p) for p in groups.values())
 
+# Code 39: 5 bars (2 wide) + 4 spaces (1 wide); rows of 10 chars share the wide-space slot
+C39_CHARS = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ-. *'
+C39_BARS = ['10001', '01001', '11000', '00101', '10100', '01100', '00011', '10010', '01010', '00110']
+def code39(text, narrow=1, wide=3, h=14):
+    x, rects = 0, []
+    for ch in f'*{text}*':
+        k = C39_CHARS.index(ch)
+        spaces = ['0'] * 4
+        spaces[(k // 10 + 1) % 4] = '1'
+        for n, w in enumerate(''.join(b + s for b, s in zip(C39_BARS[k % 10], spaces + ['']))):
+            width = wide if w == '1' else narrow
+            if n % 2 == 0:
+                rects.append(f'<rect x="{x}" width="{width}" height="{h}"/>')
+            x += width
+        x += narrow  # inter-character gap
+    x -= narrow
+    return f'<svg class="bar" width="{x}" height="{h}" viewBox="0 0 {x} {h}" aria-hidden="true">{"".join(rects)}</svg>'
+
 PAGE = '''<!doctype html>
 <html lang="en">
 <head>
@@ -44,7 +62,7 @@ PAGE = '''<!doctype html>
 <link rel="stylesheet" href="assets/index.css">
 </head>
 <body>
-<div class="top"><span><span class="dot"></span>SYS.IDX // ONLINE</span><span>TS-01 / PAGE DIRECTORY</span><span class="bar" aria-hidden="true"></span><a href="https://github.com/Kseen715/tabula-sordida">GitHub &#8599;</a></div>
+<div class="top"><span><span class="dot"></span>SYS.IDX // ONLINE</span><span>TS-01 / PAGE DIRECTORY</span>@BARCODE@<a href="https://github.com/Kseen715/tabula-sordida">GitHub &#8599;</a></div>
 <main>
 <div class="hero">
 <h1><span>Tabula</span><span class="o">Sordida</span></h1>
@@ -67,6 +85,7 @@ for (const el of document.querySelectorAll('[data-lang]')) {
 </html>
 '''
 page = (PAGE.replace('@TOTAL@', f'{total:02}').replace('@LANGS@', f'{len(groups):02}')
+        .replace('@BARCODE@', code39(f'TS-{total:02}-{len(groups):02}'))
         .replace('@TICK@', ' <i>///</i> '.join(ticker)).replace('@SECTIONS@', '\n'.join(sections)))
 open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write(page)
 print(f'index.html: {total} pages in {len(groups)} languages')
