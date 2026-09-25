@@ -191,24 +191,26 @@ h2>.idx{background:var(--k);color:var(--a);padding:12px 22px 12px calc(var(--cut
 .cnt{margin-left:auto;font-size:12px;font-weight:700}
 .serial{margin:10px 16px 12px;font-size:10px;letter-spacing:.18em;color:var(--dim);text-transform:uppercase}
 ul{list-style:none;margin:0;padding:0 14px;display:grid;gap:6px}
-a{display:grid;grid-template-columns:auto 1fr auto;gap:2px 14px;align-items:center;padding:12px 14px;color:inherit;text-decoration:none;
+li a{display:grid;grid-template-columns:auto 1fr auto;gap:2px 14px;align-items:center;padding:12px 14px;color:inherit;text-decoration:none;
 border:1px solid #ffffff22;border-left:4px solid var(--a);background:#ffffff05;transition:background .12s,color .12s,transform .12s}
 .no{grid-row:span 2;font-size:11px;color:var(--a)}
 .t{font-weight:800;font-size:17px;line-height:1.2;text-transform:uppercase;letter-spacing:.01em}
 .p{grid-column:2;font-size:11px;color:var(--dim);overflow-wrap:anywhere}
 .go{grid-row:1/span 2;grid-column:3;font:800 22px var(--disp);color:var(--a)}
-a:hover,a:focus-visible{background:var(--a);color:var(--k);transform:translateX(4px)}
-a:hover :is(.no,.p,.go),a:focus-visible :is(.no,.p,.go){color:var(--k)}
+li a:hover,li a:focus-visible{background:var(--a);color:var(--k);transform:translateX(4px)}
+li a:hover :is(.no,.p,.go),li a:focus-visible :is(.no,.p,.go){color:var(--k)}
 a:focus-visible{outline:2px solid var(--w);outline-offset:3px}
 footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:56px;padding-top:14px;border-top:2px solid var(--w);
 font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+footer a{color:var(--acid);text-decoration:none}footer a:hover{background:var(--acid);color:var(--k)}
+.top a{color:var(--k);background:var(--acid);padding:2px 6px;text-decoration:none}.top a:hover{background:var(--w)}
 footer .stripe{flex-basis:100%;height:12px;background:repeating-linear-gradient(-45deg,var(--acid) 0 8px,var(--k) 8px 16px,var(--hot) 16px 24px,var(--k) 24px 32px,var(--cy) 32px 40px,var(--k) 40px 48px,var(--mg) 48px 56px,var(--k) 56px 64px)}
 @media (max-width:560px){.hero::before{width:45%;height:70px;top:20px}.name{display:none}.stats b{font-size:26px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<div class="top"><span><span class="dot"></span>SYS.IDX // ONLINE</span><span>TS-01 / PAGE DIRECTORY</span><span class="bar" aria-hidden="true"></span><span>REV.GEN</span></div>
+<div class="top"><span><span class="dot"></span>SYS.IDX // ONLINE</span><span>TS-01 / PAGE DIRECTORY</span><span class="bar" aria-hidden="true"></span><a href="https://github.com/Kseen715/tabula-sordida">GitHub &#8599;</a></div>
 <main>
 <div class="hero">
 <h1><span>Tabula</span><span class="o">Sordida</span></h1>
@@ -223,7 +225,7 @@ footer .stripe{flex-basis:100%;height:12px;background:repeating-linear-gradient(
 <section style="--a:#ff3df2"><div class="in"><h2><span class="idx">04</span><span class="code">PL</span><span class="name" data-lang="pl" lang="pl">PL</span><span class="cnt">&times;01</span></h2><p class="serial" aria-hidden="true">LNG-PL/0004 &nbsp;//&nbsp; pl</p><ul><li><a href="PL/bebechy_serwerow.html" hreflang="pl"><span class="no">04.1</span><span class="t" lang="pl">Bebechy :: zdjęcia z wnętrza serwerów</span><span class="p">PL/bebechy_serwerow.html</span><span class="go" aria-hidden="true">&#8599;</span></a></li></ul></div></section>
 <section style="--a:#ffd400"><div class="in"><h2><span class="idx">05</span><span class="code">RU</span><span class="name" data-lang="ru" lang="ru">RU</span><span class="cnt">&times;01</span></h2><p class="serial" aria-hidden="true">LNG-RU/0005 &nbsp;//&nbsp; ru</p><ul><li><a href="RU/juicy_burger.html" hreflang="ru"><span class="no">05.1</span><span class="t" lang="ru">JUICY BURGER | Мега-Меню</span><span class="p">RU/juicy_burger.html</span><span class="go" aria-hidden="true">&#8599;</span></a></li></ul></div></section>
 </div>
-<footer><span class="stripe" aria-hidden="true"></span><span>Tabula Sordida // index</span><span>All pages run offline</span><span>&#9632; &#9632; &#9632; EOF</span></footer>
+<footer><span class="stripe" aria-hidden="true"></span><span>Tabula Sordida // index</span><a href="https://github.com/Kseen715/tabula-sordida">github.com/Kseen715/tabula-sordida</a><span>&#9632; &#9632; &#9632; EOF</span></footer>
 </main>
 <script>
 // native language names ("de" -> "Deutsch"); folder code stays as fallback
