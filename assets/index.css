@@ -145,7 +145,7 @@ footer .stripe{display:block;color:var(--i);flex-basis:100%;width:100%;height:22
 @media (max-width:640px){
 .top{display:grid;grid-template-columns:minmax(0,1fr) auto auto;grid-template-areas:"st th gh" "rev bar bar";gap:10px 8px;letter-spacing:.08em}
 .top .st{grid-area:st;white-space:nowrap;overflow:hidden}.top .dir{display:none}.top .rev{grid-area:rev;align-self:center;white-space:nowrap}
-.top .bar{grid-area:bar;justify-self:end;margin:0}.theme{grid-area:th}.top a{grid-area:gh}
+.top .bar{grid-area:bar;justify-self:end;margin:0}.theme{grid-area:th}.top a{grid-area:gh;text-align:center}
 }
 @media (max-width:360px){.top .pre{display:none}}
 @media (max-width:560px){.kick span+span::before{display:none}.tag{display:block}.tag::before{display:block;margin-bottom:10px}
