@@ -7,22 +7,29 @@
 @font-face{font-family:'Tektur';font-weight:500 800;font-display:swap;src:url(fonts/tektur-cyrillic.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
 @font-face{font-family:'Tektur';font-weight:500 800;font-display:swap;src:url(fonts/tektur-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
 @font-face{font-family:'Tektur';font-weight:500 800;font-display:swap;src:url(fonts/tektur-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
-:root{--p:#f2f1ec;--i:#0b0b0c;--dim:#6f6e68;--line:#0b0b0c2e;--gut:clamp(16px,3vw,48px);
---mono:"JetBrains Mono",ui-monospace,monospace;--disp:"Tektur","Arial Narrow",sans-serif;--cut:18px}
-/* black ink on pearl white, Printstream livery: no colour anywhere, variety comes from glyphs and hatching */
+:root{color-scheme:light dark;--p:light-dark(#f2f1ec,#0b0b0c);--i:light-dark(#0b0b0c,#ecebe4);--dim:light-dark(#6f6e68,#8d8c86);
+--line:light-dark(#0b0b0c2e,#ecebe42e);--grid:light-dark(#0b0b0c0b,#ecebe40d);--cross:light-dark(#0b0b0c4d,#ecebe440);--row:light-dark(#ffffff80,#ffffff06);
+--gut:clamp(16px,3vw,48px);--mono:"JetBrains Mono",ui-monospace,monospace;--disp:"Tektur","Arial Narrow",sans-serif;--cut:18px}
+/* follows the system theme; the toggle pins one via data-theme */
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+/* ink on pearl (inverted in dark), Printstream livery: no colour anywhere, variety comes from glyphs and hatching.
+   drawn marks live in the inline sprite and use currentColor, so they switch with the theme */
 *{box-sizing:border-box}
-html{background:var(--p)}
-body{margin:0;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;color:var(--i);font:15px/1.45 var(--disp);
-background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cpath d='M64 58v12M58 64h12' stroke='%230b0b0c' stroke-opacity='.3' stroke-width='1.5'/%3E%3C/svg%3E") 0 0/96px 96px,
-linear-gradient(#0b0b0c0b 1px,transparent 1px) 0 0/32px 32px,linear-gradient(90deg,#0b0b0c0b 1px,transparent 1px) 0 0/32px 32px,var(--p)}
+html{background:linear-gradient(var(--grid) 1px,transparent 1px) 0 0/32px 32px,linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/32px 32px,var(--p)}
+body{container:page/inline-size;position:relative;margin:0;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;color:var(--i);font:15px/1.45 var(--disp)}
+/* crosses scroll with the page so they stay on the grid intersections */
+body::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:var(--cross);
+mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cpath d='M64 58v12M58 64h12' stroke='%23000' stroke-width='1.5'/%3E%3C/svg%3E") 0 0/96px 96px}
 ::selection{background:var(--i);color:var(--p)}
 .sprite{position:absolute;width:0;height:0;overflow:hidden}
 .g{display:block;fill:currentColor}
-.top,.ruler,.kick,.hw,.vt,.rail,.serial,.no,.p,.cnt,.stats,.tag,.legend,footer{font-family:var(--mono)}
+.top,.theme,.ruler,.kick,.hw,.vt,.rail,.serial,.no,.p,.cnt,.stats,.tag,.legend,footer{font-family:var(--mono)}
 .top{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;padding:10px var(--gut);background:var(--i);color:var(--p);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
 .top .dot{width:8px;height:8px;background:var(--p);display:inline-block;margin-right:6px;animation:blink 1.2s steps(2) infinite}
 /* real Code 39, dark on light with quiet zones so scanners read it; natural width, pushed right */
-.top .bar{flex:none;margin-left:auto;padding:3px 10px;box-sizing:content-box;background:var(--p);fill:var(--i)}
+.top .bar{flex:none;margin-left:auto;padding:3px 10px;box-sizing:content-box;background:#f2f1ec;fill:#0b0b0c}
+.theme{padding:2px 6px;border:1px solid var(--p);background:none;color:inherit;font-size:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer}
+.theme:hover,.theme[aria-pressed=true]{background:var(--p);color:var(--i)}.theme:focus-visible{outline:2px solid var(--p);outline-offset:2px}
 .top a{color:var(--i);background:var(--p);padding:2px 6px;text-decoration:none}.top a:hover{outline:1px solid var(--p);outline-offset:2px}
 @keyframes blink{50%{opacity:0}}
 /* ruler: minor ticks every 8px, major every 64px, labels clipped by the ruler's own box */
@@ -33,7 +40,7 @@ repeating-linear-gradient(90deg,var(--i) 0 1px,transparent 1px 8px) 0 100%/100% 
 /* body and main are flex columns so the footer sits at the viewport bottom on short pages */
 main{flex:1;display:flex;flex-direction:column;width:100%;max-width:1920px;margin:0 auto;padding:0 var(--gut) 48px}
 .hero{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;padding:44px 0 40px}
-.hero::before{content:"";position:absolute;inset:0 0 0 35%;background:url(sigil.svg) 20% 50%/auto 110% no-repeat;opacity:.08;pointer-events:none}
+.sigil{position:absolute;top:-5%;left:30%;width:54%;height:110%;opacity:.08;fill:currentColor;pointer-events:none}
 .htxt{position:relative;min-width:0;container-type:inline-size}
 .kick{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;margin:0 0 20px;font-size:11px;letter-spacing:.18em;text-transform:uppercase}
 .kick b{background:var(--i);color:var(--p);padding:1px 6px}
@@ -63,8 +70,14 @@ h1 .o::before{content:"";display:inline-block;width:.5em;height:.12em;margin:0 .
 .c2 .g:last-child{height:104px}
 .c3 .g{width:46px;height:46px}
 .vt{flex:1;min-height:0;overflow:hidden;writing-mode:vertical-rl;white-space:nowrap;font-size:10px;letter-spacing:.3em;text-transform:uppercase}
-.bars{align-self:stretch;flex:1;min-height:120px;background:url(bars-h.svg) 0 0/100% 100%}
-.ticker{overflow:hidden;background:var(--i);color:var(--p);white-space:nowrap;margin:0 calc(-1 * var(--gut)) 18px;
+.bars{display:block;align-self:stretch;flex:1;width:100%;min-height:120px;fill:currentColor}
+.bv{display:none}
+/* ticker runs to the screen edges while main fills the page; once main hits its max-width it can't,
+   so it sits in [ ] brackets instead and the end reads as drawn, not an accidental crop */
+.tape{position:relative;margin:0 calc(-1 * var(--gut)) 18px}
+.tb{display:none;position:absolute;top:0;left:0;width:16px;height:100%;fill:currentColor}.tb.r{left:auto;right:0;transform:scaleX(-1)}
+@container page (min-width:1921px){.tape{margin-inline:0;padding:0 20px}.tb{display:block}}
+.ticker{overflow:hidden;background:var(--i);color:var(--p);white-space:nowrap;
 font:800 14px/1 var(--disp);text-transform:uppercase;letter-spacing:.06em}
 .ticker div{display:inline-block;padding:11px 0;animation:tick 40s linear infinite}
 .ticker b{background:var(--p);color:var(--i);padding:2px 6px}
@@ -88,7 +101,9 @@ font-size:10px;letter-spacing:.22em;text-transform:uppercase}
 .rail::after{content:"+";position:absolute;left:0;right:0;bottom:4px;text-align:center;font:700 14px/1 var(--mono)}
 .bd{position:relative;min-width:0;padding-bottom:28px}
 .bd::after{content:"";position:absolute;right:26px;bottom:9px;width:46px;height:8px;background:repeating-linear-gradient(-45deg,var(--i) 0 3px,transparent 3px 6px)}
-h2{display:flex;align-items:stretch;margin:0;background:var(--i);color:var(--p);font:800 20px/1 var(--disp);text-transform:uppercase}
+/* the shadow runs under the card frame (top and right) so fractional zoom can't round a paper seam between them */
+h2{display:flex;align-items:stretch;margin:0;background:var(--i);color:var(--p);font:800 20px/1 var(--disp);text-transform:uppercase;
+box-shadow:0 -3px 0 var(--i),3px 0 0 var(--i),3px -3px 0 var(--i)}
 h2>span{display:flex;align-items:center;padding:12px 14px}
 h2>.idx{background:var(--p);color:var(--i);padding:12px 22px 12px 12px;clip-path:polygon(0 0,100% 0,calc(100% - 12px) 100%,0 100%)}
 .code{font-size:28px;letter-spacing:-.02em}
@@ -99,7 +114,7 @@ section:hover .gl{transform:rotate(90deg)}
 .serial{margin:10px 16px 12px 14px;font-size:10px;letter-spacing:.18em;color:var(--dim);text-transform:uppercase}
 ul{list-style:none;margin:0;padding:0 14px;display:grid;gap:6px;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr))}
 li a{display:grid;grid-template-columns:auto 1fr auto;gap:2px 14px;align-items:center;padding:12px 14px;color:inherit;text-decoration:none;
-border:1px solid var(--line);border-left:4px solid var(--i);background:#ffffff80;transition:background .12s,color .12s,transform .12s}
+border:1px solid var(--line);border-left:4px solid var(--i);background:var(--row);transition:background .12s,color .12s,transform .12s}
 .no{grid-row:span 2;font-size:11px}
 .t{font-weight:800;font-size:17px;line-height:1.2;text-transform:uppercase;letter-spacing:.01em}
 .p{grid-column:2;font-size:11px;color:var(--dim);overflow-wrap:anywhere}
@@ -110,11 +125,11 @@ a:focus-visible{outline:2px solid var(--i);outline-offset:3px}
 footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:auto;padding-top:14px;border-top:2px solid var(--i);
 font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
 footer a{color:var(--i)}footer a:hover{background:var(--i);color:var(--p)}
-footer .stripe{flex-basis:100%;height:22px;background:url(bars-v.svg) 0 0/100% 100%}
+footer .stripe{display:block;color:var(--i);flex-basis:100%;width:100%;height:22px;fill:currentColor}
 /* narrow: the spine turns sideways into bands under the title */
 @media (max-width:900px){
 .hero{grid-template-columns:minmax(0,1fr);padding-top:32px}
-.hero::before{inset:0;background-position:85% 20%;background-size:auto 70%}
+.sigil{top:0;left:45%;width:55%;height:70%}
 .spine{grid-template-columns:minmax(0,1fr);gap:12px}
 .spine>div{flex-direction:row;justify-content:space-between}
 .c1 .g{width:32px;height:40px;flex:none}
@@ -122,7 +137,7 @@ footer .stripe{flex-basis:100%;height:22px;background:url(bars-v.svg) 0 0/100% 1
 .c2 .g:last-child{flex-basis:84px;aspect-ratio:1}
 .vt{writing-mode:horizontal-tb;align-self:center;text-align:right}
 .c3 .vt,.c3 .g{display:none}
-.bars{min-height:0;height:34px;background-image:url(bars-v.svg)}
+.bh{display:none}.bv{display:block;min-height:0;height:34px}
 }
 @media (max-width:560px){.name{display:none}.stats b{font-size:26px}.stats div{padding:8px 16px 8px 12px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}

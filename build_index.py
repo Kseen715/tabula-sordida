@@ -55,6 +55,12 @@ def code39(text, narrow=1, wide=3, h=14):
     x -= narrow
     return f'<svg class="bar" width="{x}" height="{h}" viewBox="0 0 {x} {h}" aria-hidden="true">{"".join(rects)}</svg>'
 
+# graduated line fields (the wing and hood stripes): pitch 3, lines thicken toward one end
+def gradbars(n, vertical):
+    t = lambda k: 0.3 + 2.4 * (k / (n - 1)) ** 1.6
+    return ''.join(f'<rect x="{k * 3}" width="{t(n - 1 - k):.2f}" height="10"/>' if vertical
+                   else f'<rect y="{k * 3}" width="100" height="{t(k):.2f}"/>' for k in range(n))
+
 # glyph sprite: Printstream-style marks drawn once, reused through <use> so they follow currentColor
 SPRITE = '''<svg class="sprite" aria-hidden="true"><defs>
 <symbol id="xs" viewBox="0 0 124 100"><path d="M0 0H24L62 38L100 0H124L74 50L124 100H100L62 62L24 100H0L50 50Z"/></symbol>
@@ -69,7 +75,23 @@ SPRITE = '''<svg class="sprite" aria-hidden="true"><defs>
 <symbol id="ring" viewBox="0 0 100 100"><circle cx="50" cy="50" r="38" fill="none" stroke="currentColor" stroke-width="13" pathLength="100" stroke-dasharray="20 5" stroke-dashoffset="22.5"/></symbol>
 <symbol id="chev" viewBox="0 0 100 72"><path d="M0 0H32L50 28L68 0H100L50 72Z"/></symbol>
 <symbol id="phi" viewBox="0 0 100 100"><path d="M22 92L78 8" stroke="currentColor" stroke-width="7"/><circle cx="50" cy="50" r="28" fill="none" stroke="currentColor" stroke-width="7"/></symbol>
-</defs></svg>'''
+<symbol id="tb" viewBox="0 0 16 40" preserveAspectRatio="none"><path d="M16 2H8L2 8V32L8 38H16" fill="none" stroke="currentColor" stroke-width="3"/><path d="M6 15H9V25H6Z"/></symbol>
+<symbol id="bh" viewBox="0 0 100 120" preserveAspectRatio="none" shape-rendering="crispEdges">@BH@</symbol>
+<symbol id="bv" viewBox="0 0 240 10" preserveAspectRatio="none" shape-rendering="crispEdges">@BV@</symbol>
+<symbol id="sigil" viewBox="-100 -150 200 300"><!-- cybersigil: right half of thorns, mirrored across the spine -->
+<g id="sh">
+<path d="M0 -150L5 -44L2 0L5 44L0 150Z"/>
+<path d="M3 -28C34 -38 62 -72 70 -134C60 -84 36 -52 3 -16Z"/>
+<path d="M44 -66L92 -80L50 -56Z"/>
+<path d="M3 -96C16 -100 26 -114 24 -140C20 -118 12 -106 3 -102Z"/>
+<path d="M5 -3C40 -10 70 -6 99 -24C74 4 42 8 5 7Z"/>
+<path d="M60 -6L84 18L66 0Z"/>
+<path d="M3 26C32 36 58 70 52 124C46 88 26 58 3 42Z"/>
+<path d="M36 50L78 44L40 60Z"/>
+<path d="M3 104C14 108 20 122 16 140C12 124 8 116 3 114Z"/>
+<path d="M0 -20L12 0L0 20Z"/>
+</g><use href="#sh" transform="scale(-1 1)"/></symbol>
+</defs></svg>'''.replace('@BH@', gradbars(40, False)).replace('@BV@', gradbars(80, True))
 
 PAGE = '''<!doctype html>
 <html lang="en">
@@ -79,13 +101,15 @@ PAGE = '''<!doctype html>
 <title>Tabula Sordida</title>
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/index.css">
+<script>try { const t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch {}</script>
 </head>
 <body>
 @SPRITE@
-<div class="top"><span><span class="dot"></span>SYS.IDX // ONLINE</span><span>TS-01 / PAGE DIRECTORY</span><span>REV 0x@HEX@</span>@BARCODE@<a href="https://github.com/Kseen715/tabula-sordida">GitHub &#8599;</a></div>
+<div class="top"><span><span class="dot"></span>SYS.IDX // ONLINE</span><span>TS-01 / PAGE DIRECTORY</span><span>REV 0x@HEX@</span>@BARCODE@<button class="theme" type="button" aria-pressed="false">Dark</button><a href="https://github.com/Kseen715/tabula-sordida">GitHub &#8599;</a></div>
 <div class="ruler" aria-hidden="true">@RULER@</div>
 <main>
 <div class="hero">
+<svg class="sigil" aria-hidden="true"><use href="#sigil"/></svg>
 <div class="htxt">
 <p class="kick" aria-hidden="true"><b>[+]</b><span>ARCHIVE // N&deg;@TOTAL@</span><span>SEC.01&ndash;@LANGS@</span><span>DIRTY SLATE</span></p>
 <h1><span data-n="01">Tabula</span><span class="o" data-n="02">Sordida</span></h1>
@@ -96,21 +120,28 @@ PAGE = '''<!doctype html>
 <div class="spine" aria-hidden="true">
 <div class="c1"><svg class="g"><use href="#hx"/></svg><svg class="g"><use href="#tri"/></svg><svg class="g"><use href="#tri"/></svg><svg class="g"><use href="#hx"/></svg><span class="vt">Handle with care // 0x@HEX@</span></div>
 <div class="c2"><svg class="g"><use href="#xs"/></svg><svg class="g"><use href="#xo"/></svg><svg class="g"><use href="#xo"/></svg><svg class="g"><use href="#xs"/></svg><svg class="g"><use href="#sig"/></svg></div>
-<div class="c3"><span class="vt">Not a tabula rasa</span><span class="bars"></span><svg class="g"><use href="#vf"/></svg><svg class="g"><use href="#vf"/></svg></div>
+<div class="c3"><span class="vt">Not a tabula rasa</span><svg class="bars bh"><use href="#bh"/></svg><svg class="bars bv"><use href="#bv"/></svg><svg class="g"><use href="#vf"/></svg><svg class="g"><use href="#vf"/></svg></div>
 </div>
 </div>
-<div class="ticker" aria-hidden="true"><div>@TICK@ @SEP@ @TICK@ @SEP@ </div></div>
+<div class="tape" aria-hidden="true"><svg class="tb"><use href="#tb"/></svg><div class="ticker"><div>@TICK@ @SEP@ @TICK@ @SEP@ </div></div><svg class="tb r"><use href="#tb"/></svg></div>
 <div class="legend" aria-hidden="true"><span>[+] IDX.@LANGS@</span><span class="rule"></span><span>SORT &#9656; LANG / TITLE</span><span class="rule"></span><span>N&deg;@TOTAL@</span></div>
 <div class="grid">
 @SECTIONS@
 </div>
-<footer><span class="stripe" aria-hidden="true"></span><span>Tabula Sordida // index</span><a href="https://github.com/Kseen715/tabula-sordida">github.com/Kseen715/tabula-sordida</a><span>+ + + EOF</span></footer>
+<footer><svg class="stripe" aria-hidden="true"><use href="#bv"/></svg><span>Tabula Sordida // index</span><a href="https://github.com/Kseen715/tabula-sordida">github.com/Kseen715/tabula-sordida</a><span>+ + + EOF</span></footer>
 </main>
 <script>
 // native language names ("de" -> "Deutsch"); folder code stays as fallback
 for (const el of document.querySelectorAll('[data-lang]')) {
   try { el.textContent = new Intl.DisplayNames([el.dataset.lang], {type: 'language'}).of(el.dataset.lang); } catch {}
 }
+// theme toggle: flips whatever is showing now and remembers the choice
+const root = document.documentElement, btn = document.querySelector('.theme');
+const isDark = () => (root.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark';
+const sync = () => btn.setAttribute('aria-pressed', isDark());
+btn.onclick = () => { root.dataset.theme = isDark() ? 'light' : 'dark'; try { localStorage.setItem('theme', root.dataset.theme); } catch {} sync(); };
+matchMedia('(prefers-color-scheme: dark)').onchange = sync;
+sync();
 </script>
 </body>
 </html>
