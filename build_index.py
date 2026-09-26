@@ -105,7 +105,7 @@ PAGE = '''<!doctype html>
 </head>
 <body>
 @SPRITE@
-<div class="top"><span><span class="dot"></span>SYS.IDX // ONLINE</span><span>TS-01 / PAGE DIRECTORY</span><span>REV 0x@HEX@</span>@BARCODE@<button class="theme" type="button" aria-pressed="false">Dark</button><a href="https://github.com/Kseen715/tabula-sordida">GitHub &#8599;</a></div>
+<div class="top"><span class="st"><span class="dot"></span><span class="pre">SYS.IDX // </span>ONLINE</span><span class="dir">TS-01 / PAGE DIRECTORY</span><span class="rev">REV 0x@HEX@</span>@BARCODE@<button class="theme" type="button" aria-pressed="false">Dark</button><a href="https://github.com/Kseen715/tabula-sordida">GitHub &#8599;</a></div>
 <div class="ruler" aria-hidden="true">@RULER@</div>
 <main>
 <div class="hero">
@@ -135,6 +135,12 @@ PAGE = '''<!doctype html>
 for (const el of document.querySelectorAll('[data-lang]')) {
   try { el.textContent = new Intl.DisplayNames([el.dataset.lang], {type: 'language'}).of(el.dataset.lang); } catch {}
 }
+// masonry: row span = card height + 28px gap (see .grid.js); re-fit whenever a card resizes (width, fonts, names)
+const grid = document.querySelector('.grid');
+const fit = () => { for (const s of grid.children) s.style.gridRowEnd = `span ${Math.ceil(s.getBoundingClientRect().height) + 28}`; };
+const ro = new ResizeObserver(fit);
+for (const s of grid.children) ro.observe(s);
+grid.classList.add('js');
 // theme toggle: flips whatever is showing now and remembers the choice
 const root = document.documentElement, btn = document.querySelector('.theme');
 const isDark = () => (root.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark';
