@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-100 -150 200 300" fill="#0b0b0c">
+<!-- cybersigil: right half of thorns, mirrored across the spine -->
+<g id="h">
+<path d="M0 -150L5 -44L2 0L5 44L0 150Z"/>
+<path d="M3 -28C34 -38 62 -72 70 -134C60 -84 36 -52 3 -16Z"/>
+<path d="M44 -66L92 -80L50 -56Z"/>
+<path d="M3 -96C16 -100 26 -114 24 -140C20 -118 12 -106 3 -102Z"/>
+<path d="M5 -3C40 -10 70 -6 99 -24C74 4 42 8 5 7Z"/>
+<path d="M60 -6L84 18L66 0Z"/>
+<path d="M3 26C32 36 58 70 52 124C46 88 26 58 3 42Z"/>
+<path d="M36 50L78 44L40 60Z"/>
+<path d="M3 104C14 108 20 122 16 140C12 124 8 116 3 114Z"/>
+<path d="M0 -20L12 0L0 20Z"/>
+</g>
+<use xlink:href="#h" href="#h" transform="scale(-1 1)"/>
+</svg>
