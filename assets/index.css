@@ -40,7 +40,8 @@ repeating-linear-gradient(90deg,var(--i) 0 1px,transparent 1px 8px) 0 100%/100% 
 /* body and main are flex columns so the footer sits at the viewport bottom on short pages */
 main{flex:1;display:flex;flex-direction:column;width:100%;max-width:1920px;margin:0 auto;padding:0 var(--gut) 48px}
 .hero{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;padding:44px 0 40px}
-.sigil{position:absolute;top:-5%;left:30%;width:54%;height:110%;opacity:.08;fill:currentColor;pointer-events:none}
+/* solid sigil (assets/sigil.svg): its cutouts inherit the paper fill from here */
+.sigil{position:absolute;top:0;left:30%;width:54%;height:100%;opacity:.12;fill:var(--p);pointer-events:none}
 .htxt{position:relative;min-width:0;container-type:inline-size}
 .kick{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;margin:0 0 20px;font-size:11px;letter-spacing:.18em;text-transform:uppercase}
 .kick b{background:var(--i);color:var(--p);padding:1px 6px}

@@ -61,6 +61,13 @@ def gradbars(n, vertical):
     return ''.join(f'<rect x="{k * 3}" width="{t(n - 1 - k):.2f}" height="10"/>' if vertical
                    else f'<rect y="{k * 3}" width="100" height="{t(k):.2f}"/>' for k in range(n))
 
+# hero sigil: assets/sigil.svg inlined as a symbol, so it takes the page's colours (ink = currentColor,
+# cutouts = the fill .sigil sets); comments dropped, the root's viewBox kept
+_svg = open(os.path.join(ROOT, 'assets', 'sigil.svg'), encoding='utf-8').read()
+_root, _body = re.search(r'<svg([^>]*)>(.*)</svg>', _svg, re.S).groups()
+SIGIL = ('<symbol id="sigil" viewBox="%s">' % re.search(r'viewBox="([^"]+)"', _root)[1]
+         + re.sub(r'\s*<!--.*?-->', '', _body, flags=re.S).strip() + '</symbol>')
+
 # glyph sprite: Printstream-style marks drawn once, reused through <use> so they follow currentColor
 SPRITE = '''<svg class="sprite" aria-hidden="true"><defs>
 <symbol id="xs" viewBox="0 0 124 100"><path d="M0 0H24L62 38L100 0H124L74 50L124 100H100L62 62L24 100H0L50 50Z"/></symbol>
@@ -78,20 +85,8 @@ SPRITE = '''<svg class="sprite" aria-hidden="true"><defs>
 <symbol id="tb" viewBox="0 0 16 40" preserveAspectRatio="none"><path d="M16 2H8L2 8V32L8 38H16" fill="none" stroke="currentColor" stroke-width="3"/><path d="M6 15H9V25H6Z"/></symbol>
 <symbol id="bh" viewBox="0 0 100 120" preserveAspectRatio="none" shape-rendering="crispEdges">@BH@</symbol>
 <symbol id="bv" viewBox="0 0 240 10" preserveAspectRatio="none" shape-rendering="crispEdges">@BV@</symbol>
-<symbol id="sigil" viewBox="-100 -150 200 300"><!-- cybersigil: right half of thorns, mirrored across the spine -->
-<g id="sh">
-<path d="M0 -150L5 -44L2 0L5 44L0 150Z"/>
-<path d="M3 -28C34 -38 62 -72 70 -134C60 -84 36 -52 3 -16Z"/>
-<path d="M44 -66L92 -80L50 -56Z"/>
-<path d="M3 -96C16 -100 26 -114 24 -140C20 -118 12 -106 3 -102Z"/>
-<path d="M5 -3C40 -10 70 -6 99 -24C74 4 42 8 5 7Z"/>
-<path d="M60 -6L84 18L66 0Z"/>
-<path d="M3 26C32 36 58 70 52 124C46 88 26 58 3 42Z"/>
-<path d="M36 50L78 44L40 60Z"/>
-<path d="M3 104C14 108 20 122 16 140C12 124 8 116 3 114Z"/>
-<path d="M0 -20L12 0L0 20Z"/>
-</g><use href="#sh" transform="scale(-1 1)"/></symbol>
-</defs></svg>'''.replace('@BH@', gradbars(40, False)).replace('@BV@', gradbars(80, True))
+@SIGIL@
+</defs></svg>'''.replace('@SIGIL@', SIGIL).replace('@BH@', gradbars(40, False)).replace('@BV@', gradbars(80, True))
 
 PAGE = '''<!doctype html>
 <html lang="en">
